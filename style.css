@@ -481,30 +481,22 @@ body::before {
     color: #fff;
 }
 
-/* Hero typewriter positioned to overlap with mega-text for blend effect */
-/* Typewriter inside marquee - shares stacking context with mega-text for blend effect */
-.marquee-typewriter {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    transform: translateY(-50%);
-    text-align: center;
+/* Hero typewriter - original position in hero content area */
+.hero-typewriter-wrapper {
     font-family: var(--font-mono);
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
+    margin-bottom: var(--space-xl);
     color: #fff;
-    pointer-events: none;
+}
+
+.hero-typewriter-wrapper .typewriter {
+    color: #fff;
     mix-blend-mode: difference;
-    z-index: 10;
 }
 
-.marquee-typewriter .typewriter {
-    color: #fff;
-}
-
-.marquee-typewriter .cursor {
+.hero-typewriter-wrapper .cursor {
     display: inline-block;
     animation: blink 1s step-end infinite;
     color: var(--color-text-primary);
