@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of a passionate Web Developer specializing in creating innovative digital experiences through collaboration and cutting-edge technology.">
+    <meta name="theme-color" content="#000000">
+    <title>AI.DEV | Creative Web Developer</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-left">
+            <a href="#" class="logo" aria-label="HZ Home">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- H shape with Z inside -->
+                        <path d="M6 6V34M6 20H20M20 6V34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M9 10L17 20L9 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>HZ</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <a href="#work" class="nav-link" data-tooltip="View Projects">Work</a>
+            <a href="#skills" class="nav-link" data-tooltip="View Skills">Skills</a>
+            <a href="#about" class="nav-link" data-tooltip="Learn About Me">About</a>
+            <a href="#contact" class="nav-link" data-tooltip="Get In Touch">Contact</a>
+        </div>
+        
+        <div class="nav-right">
+            <a href="#" class="resume-btn" download aria-label="Download Resume PDF">
+                <span>Resume</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+            </a>
+            <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
+        <div class="mobile-menu-content">
+            <a href="#work" class="mobile-nav-link">Work</a>
+            <a href="#skills" class="mobile-nav-link">Skills</a>
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+        </div>
+    </div>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="hero-grid">
+                <div class="hero-left" aria-hidden="true">
+                    <div class="glow-effect"></div>
+                </div>
+                
+                <div class="hero-right">
+                    <div class="hero-content">
+                        <h1 id="hero-heading">
+                            <span class="typewriter" aria-label="Shaping Web Developer"></span>
+                            <span class="cursor" aria-hidden="true">|</span>
+                        </h1>
+                        <a href="#work" class="discover-link" aria-label="Discover my work">
+                            <span>Discover my work</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-marquee" aria-hidden="true">
+                <h2 class="mega-text">AI.DEV</h2>
+            </div>
+            
+            <div class="hero-description">
+                <p>
+                    <span class="highlight">Innovation through collaboration</span> is at the heart of my work. 
+                    I am dedicated to empowering individuals to take ownership and shape the future. 
+                    I help build organizations that transcend traditional boundaries. 
+                    Let us create a world where every idea can thrive. 
+                    <strong>Ready to be part of this movement?</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Work Section -->
+        <section id="work" class="work-section" aria-labelledby="work-heading">
+            <div class="work-header">
+                <span class="work-label">Featured Projects</span>
+                <h2 id="work-heading" class="visually-hidden">My Work</h2>
+                <a href="#about" class="about-me-link" aria-label="Learn more about me">
+                    <span>About me</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="work-content">
+                <nav class="project-list" aria-label="Project categories">
+                    <button class="project-item active" data-project="0" aria-selected="true" role="tab">
+                        Branding
+                    </button>
+                    <button class="project-item" data-project="1" aria-selected="false" role="tab">
+                        Development
+                    </button>
+                    <button class="project-item" data-project="2" aria-selected="false" role="tab">
+                        Marketing
+                    </button>
+                    <button class="project-item" data-project="3" aria-selected="false" role="tab">
+                        Mobile Apps
+                    </button>
+                    <button class="project-item" data-project="4" aria-selected="false" role="tab">
+                        Interface Design
+                    </button>
+                </nav>
+                
+                <div class="project-carousel" role="region" aria-label="Project showcase carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track">
+                            <article class="carousel-card" role="tabpanel" aria-label="Branding project showcase">
+                                <div class="card-inner" style="--bg-color: #a8e6cf;">
+                                    <img src="https://picsum.photos/400/300?random=1" alt="Branding project showcasing visual identity design" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>Brand Identity</h3>
+                                        <p>Visual Design System</p>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="carousel-card" role="tabpanel" aria-label="Development project showcase">
+                                <div class="card-inner" style="--bg-color: #ffd3b6;">
+                                    <img src="https://picsum.photos/400/300?random=2" alt="Development project showcasing web application" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>Web Platform</h3>
+                                        <p>Full-Stack Development</p>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="carousel-card" role="tabpanel" aria-label="Marketing project showcase">
+                                <div class="card-inner" style="--bg-color: #ffaaa5;">
+                                    <img src="https://picsum.photos/400/300?random=3" alt="Marketing project showcasing digital campaign" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>Digital Campaign</h3>
+                                        <p>Marketing Strategy</p>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="carousel-card" role="tabpanel" aria-label="Mobile app project showcase">
+                                <div class="card-inner" style="--bg-color: #ff8b94;">
+                                    <img src="https://picsum.photos/400/300?random=4" alt="Mobile app project showcasing iOS and Android application" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>Mobile Experience</h3>
+                                        <p>iOS & Android Apps</p>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="carousel-card" role="tabpanel" aria-label="Interface design project showcase">
+                                <div class="card-inner" style="--bg-color: #c7ceea;">
+                                    <img src="https://picsum.photos/400/300?random=5" alt="Interface design project showcasing UI/UX work" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>UI/UX Design</h3>
+                                        <p>Interface Innovation</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="carousel-controls" aria-label="Carousel navigation">
+                        <button class="carousel-btn prev" aria-label="Previous project" aria-controls="carousel-track">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
+                            </svg>
+                        </button>
+                        <button class="carousel-btn next" aria-label="Next project" aria-controls="carousel-track">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="carousel-indicators" role="tablist" aria-label="Project indicators">
+                        <button class="indicator active" aria-label="Go to project 1" aria-selected="true" role="tab"></button>
+                        <button class="indicator" aria-label="Go to project 2" aria-selected="false" role="tab"></button>
+                        <button class="indicator" aria-label="Go to project 3" aria-selected="false" role="tab"></button>
+                        <button class="indicator" aria-label="Go to project 4" aria-selected="false" role="tab"></button>
+                        <button class="indicator" aria-label="Go to project 5" aria-selected="false" role="tab"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section" aria-labelledby="skills-heading">
+            <div class="skills-header">
+                <span class="work-label">Technical Expertise</span>
+            </div>
+            
+            <div class="skills-intro">
+                <h2 id="skills-heading" class="skills-title">Transforming Ideas Into<br>Digital Reality</h2>
+            </div>
+            
+            <div class="skills-content">
+                <div class="skills-description">
+                    <p>With expertise spanning modern frontend frameworks, backend technologies, and UI/UX design principles, I deliver comprehensive solutions that drive business growth and user engagement.</p>
+                </div>
+                
+                <div class="skills-grid" role="list" aria-label="Technical skills">
+                    <div class="skill-card" data-skill="HTML5" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 40L5 5H45L42 40L25 45L8 40Z" fill="#E44D26"/>
+                                <path d="M25 42L39 38L42 8H25V42Z" fill="#F16529"/>
+                                <path d="M25 20H17L18 24H25V20Z" fill="white"/>
+                                <path d="M25 28L25 28L18 26L19 30L25 32V28Z" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="CSS3" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 40L5 5H45L42 40L25 45L8 40Z" fill="#264DE4"/>
+                                <path d="M25 42L39 38L42 8H25V42Z" fill="#2965F1"/>
+                                <path d="M25 20H17L18 24H25V20Z" fill="white"/>
+                                <path d="M25 28L25 28L18 26L19 30L25 32V28Z" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="JavaScript" role="listitem" tabindex="0">
+                        <div class="skill-icon js-icon" aria-hidden="true">JS</div>
+                    </div>
+                    <div class="skill-card" data-skill="TypeScript" role="listitem" tabindex="0">
+                        <div class="skill-icon ts-icon" aria-hidden="true">TS</div>
+                    </div>
+                    <div class="skill-card" data-skill="React" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="25" cy="25" r="4" fill="#61DAFB"/>
+                                <ellipse cx="25" cy="25" rx="18" ry="7" stroke="#61DAFB" stroke-width="1.5" transform="rotate(0 25 25)"/>
+                                <ellipse cx="25" cy="25" rx="18" ry="7" stroke="#61DAFB" stroke-width="1.5" transform="rotate(60 25 25)"/>
+                                <ellipse cx="25" cy="25" rx="18" ry="7" stroke="#61DAFB" stroke-width="1.5" transform="rotate(120 25 25)"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="Node.js" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 45L10 36V14L25 5L40 14V36L25 45Z" fill="#339933"/>
+                                <path d="M25 40V25M25 25L17 20M25 25L33 20" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="Python" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 5C15 5 15 12 15 14V19H25V21H12C8 21 5 24 5 28V36C5 40 8 43 12 43H17V36C17 32 20 29 24 29H32C35 29 38 26 38 22V14C38 10 35 5 25 5ZM20 10C21.5 10 22.5 11 22.5 12.5C22.5 14 21.5 15 20 15C18.5 15 17.5 14 17.5 12.5C17.5 11 18.5 10 20 10Z" fill="#3776AB"/>
+                                <path d="M38 21V28C38 32 35 35 31 35H21C17 35 14 38 14 42V44C14 48 17 50 25 50C35 50 35 43 35 41V36H25V34H38C42 34 45 31 45 27V19C45 17 44 15 42 13V21H38ZM31 40C32.5 40 33.5 41 33.5 42.5C33.5 44 32.5 45 31 45C29.5 45 28.5 44 28.5 42.5C28.5 41 29.5 40 31 40Z" fill="#FFD43B"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="Git" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="25" cy="25" r="20" fill="#F05032"/>
+                                <path d="M25 15V25L31 31M20 20L25 25" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                                <circle cx="25" cy="15" r="2" fill="white"/>
+                                <circle cx="20" cy="20" r="2" fill="white"/>
+                                <circle cx="31" cy="31" r="2" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="Docker" role="listitem" tabindex="0">
+                        <div class="skill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="8" y="20" width="6" height="6" fill="#2496ED"/>
+                                <rect x="16" y="20" width="6" height="6" fill="#2496ED"/>
+                                <rect x="24" y="20" width="6" height="6" fill="#2496ED"/>
+                                <rect x="8" y="12" width="6" height="6" fill="#2496ED"/>
+                                <rect x="16" y="12" width="6" height="6" fill="#2496ED"/>
+                                <rect x="24" y="12" width="6" height="6" fill="#2496ED"/>
+                                <rect x="32" y="12" width="6" height="6" fill="#2496ED"/>
+                                <path d="M38 26H36C36 26 35 28 32 28C29 28 28 26 28 26H6C6 26 6 38 19 38C32 38 38 30 38 26Z" fill="#2496ED"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="More" role="listitem" tabindex="0">
+                        <div class="skill-icon plus-icon" aria-hidden="true">
+                            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 10V30M10 20H30"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section" aria-labelledby="about-heading">
+            <div class="about-content">
+                <div class="developer-illustration" aria-hidden="true">
+                    <svg class="dev-svg" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Abstract Developer Illustration -->
+                        <rect x="50" y="50" width="300" height="200" rx="10" fill="#1a1a2e"/>
+                        <rect x="70" y="70" width="200" height="15" rx="3" fill="#F5A623"/>
+                        <rect x="70" y="95" width="150" height="8" rx="2" fill="#333"/>
+                        <rect x="70" y="110" width="180" height="8" rx="2" fill="#333"/>
+                        <rect x="70" y="125" width="120" height="8" rx="2" fill="#333"/>
+                        <circle cx="320" cy="100" r="25" fill="#F5A623"/>
+                        <rect x="290" y="140" width="60" height="80" rx="5" fill="#2a2a3e"/>
+                        <rect x="300" y="150" width="40" height="8" rx="2" fill="#444"/>
+                        <rect x="300" y="165" width="40" height="8" rx="2" fill="#444"/>
+                        <rect x="300" y="180" width="30" height="8" rx="2" fill="#444"/>
+                        <circle cx="200" cy="220" r="30" fill="none" stroke="#F5A623" stroke-width="2"/>
+                        <path d="M185 220L195 230L215 210" stroke="#F5A623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <div class="about-info">
+                    <h2 id="about-heading" class="about-heading">Building Digital Experiences That Matter</h2>
+                    
+                    <div class="about-tabs" role="tablist" aria-label="About me sections">
+                        <button class="tab-btn active" data-tab="story" role="tab" aria-selected="true" id="tab-story" aria-controls="panel-story">
+                            My Story
+                        </button>
+                        <button class="tab-btn" data-tab="approach" role="tab" aria-selected="false" id="tab-approach" aria-controls="panel-approach">
+                            Approach
+                        </button>
+                        <button class="tab-btn" data-tab="goals" role="tab" aria-selected="false" id="tab-goals" aria-controls="panel-goals">
+                            Goals
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div class="tab-panel active" data-panel="story" role="tabpanel" id="panel-story" aria-labelledby="tab-story">
+                            <p>I began my journey as a curious problem solver, fascinated by the intersection of design and technology. Over the years, I have honed my skills across the full development stack, working with startups and established companies to bring their visions to life. Every project is an opportunity to learn, grow, and create something meaningful.</p>
+                        </div>
+                        <div class="tab-panel" data-panel="approach" role="tabpanel" id="panel-approach" aria-labelledby="tab-approach" hidden>
+                            <p>My approach centers on user-centric design and clean, maintainable code. I believe in collaborative development, transparent communication, and iterative improvement. By understanding business objectives and user needs, I create solutions that are not only visually appealing but also performant and scalable.</p>
+                        </div>
+                        <div class="tab-panel" data-panel="goals" role="tabpanel" id="panel-goals" aria-labelledby="tab-goals" hidden>
+                            <p>I aim to continue pushing the boundaries of web development, exploring emerging technologies like AI, WebGL, and progressive web applications. My goal is to contribute to projects that make a positive impact, whether through innovative user experiences or by solving complex technical challenges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <section class="marquee-section" aria-label="Scrolling text banner">
+            <div class="marquee-wrapper">
+                <div class="marquee-track" aria-hidden="true">
+                    <span class="marquee-text">Creative Developer</span>
+                    <span class="marquee-text">•</span>
+                    <span class="marquee-text">UI/UX Designer</span>
+                    <span class="marquee-text">•</span>
+                    <span class="marquee-text">Problem Solver</span>
+                    <span class="marquee-text">•</span>
+                    <span class="marquee-text">Creative Developer</span>
+                    <span class="marquee-text">•</span>
+                    <span class="marquee-text">UI/UX Designer</span>
+                    <span class="marquee-text">•</span>
+                    <span class="marquee-text">Problem Solver</span>
+                    <span class="marquee-text">•</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="footer" role="contentinfo">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <h3 class="footer-title">Navigation</h3>
+                    <nav aria-label="Footer navigation">
+                        <ul class="footer-menu">
+                            <li><a href="#work" class="footer-link">Work</a></li>
+                            <li><a href="#skills" class="footer-link">Skills</a></li>
+                            <li><a href="#about" class="footer-link">About</a></li>
+                            <li><a href="#contact" class="footer-link">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="footer-center">
+                    <p class="footer-desc">Creating exceptional digital experiences through innovative design and cutting-edge technology. Let us collaborate on your next project.</p>
+                    <p class="footer-copy">© 2026 AI.DEV. All rights reserved.</p>
+                </div>
+                
+                <div class="footer-right">
+                    <div class="footer-contact">
+                        <h3 class="footer-title">Connect</h3>
+                        <p>hello@aidev.dev</p>
+                    </div>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link" aria-label="GitHub profile">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn profile">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter profile">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="shader-loader.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
