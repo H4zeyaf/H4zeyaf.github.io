@@ -458,8 +458,8 @@ body::before {
 }
 
 .hero-content {
-    mix-blend-mode: difference;
-    z-index: 10;
+    position: relative;
+    z-index: 15;
 }
 
 .hero-content h1 {
@@ -469,6 +469,11 @@ body::before {
     line-height: 1.2;
     margin-bottom: var(--space-xl);
     color: #fff;
+    mix-blend-mode: difference;
+}
+
+.typewriter {
+    mix-blend-mode: difference;
 }
 
 .discover-link {

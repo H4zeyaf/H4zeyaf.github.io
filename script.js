@@ -167,7 +167,7 @@ class DecryptTooltip {
 class Typewriter {
     constructor() {
         this.element = Utils.$('.typewriter');
-        this.text = "Shaping Web Developer";
+        this.text = "Creative Technologist";
         this.index = 0;
         this.isWaiting = false;
         
