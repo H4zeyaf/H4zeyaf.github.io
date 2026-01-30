@@ -469,14 +469,17 @@ body::before {
     line-height: 1.2;
     margin-bottom: var(--space-xl);
     color: #fff;
-    mix-blend-mode: exclusion;
-    isolation: isolate;
 }
 
+/* Individual negative blend for typewriter text */
 .typewriter {
-    mix-blend-mode: exclusion;
+    color: #fff;
+    mix-blend-mode: difference;
+    position: relative;
+    z-index: 25;
 }
 
+/* Individual negative blend for discover link */
 .discover-link {
     display: inline-flex;
     align-items: center;
@@ -491,7 +494,16 @@ body::before {
     transition: all var(--transition-slow);
     position: relative;
     overflow: hidden;
-    mix-blend-mode: exclusion;
+    mix-blend-mode: difference;
+    z-index: 25;
+}
+
+.discover-link span {
+    mix-blend-mode: difference;
+}
+
+.discover-link svg {
+    mix-blend-mode: difference;
 }
 
 .typewriter {
