@@ -115,6 +115,18 @@ body {
 /* ==========================================================================
    Accessibility Utilities
    ========================================================================== */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .skip-link {
     position: absolute;
     top: -100%;
@@ -453,13 +465,11 @@ body::before {
     align-items: flex-start;
     padding: var(--space-2xl) var(--space-2xl) 0;
     position: relative;
-    z-index: 10;
     margin-top: 10rem;
 }
 
 .hero-content {
     position: relative;
-    z-index: 20;
 }
 
 .hero-content h1 {
@@ -471,12 +481,33 @@ body::before {
     color: #fff;
 }
 
-/* Individual negative blend for typewriter text */
-.typewriter {
+/* Hero typewriter positioned to overlap with mega-text for blend effect */
+/* Typewriter inside marquee - shares stacking context with mega-text for blend effect */
+.marquee-typewriter {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
     color: #fff;
+    pointer-events: none;
     mix-blend-mode: difference;
-    position: relative;
-    z-index: 25;
+    z-index: 10;
+}
+
+.marquee-typewriter .typewriter {
+    color: #fff;
+}
+
+.marquee-typewriter .cursor {
+    display: inline-block;
+    animation: blink 1s step-end infinite;
+    color: var(--color-text-primary);
 }
 
 /* Individual negative blend for discover link */
@@ -597,7 +628,7 @@ body::before {
     font-weight: 500;
 }
 
-/* Ensure mega text is below content for blend to work */
+/* Mega text as backdrop for blend mode */
 .hero-marquee {
     position: absolute;
     top: 52%;
@@ -605,7 +636,11 @@ body::before {
     width: 100%;
     transform: translateY(-50%);
     pointer-events: none;
-    z-index: 5;
+}
+
+.hero-marquee .mega-text {
+    position: relative;
+    z-index: 1;
 }
 
 .mega-text {
