@@ -217,6 +217,8 @@ class Carousel3D {
 
         this.currentRotation = 0;
         this.isPaused = false;
+        this.isTransitioning = false;
+        this.transitionQueue = null;
         this.lastTime = 0;
         this.cardCount = this.cards.length;
         this.anglePerCard = 360 / this.cardCount;
@@ -370,9 +372,25 @@ class Carousel3D {
     }
 
     rotateTo(index) {
+        // If already transitioning, queue the next target
+        if (this.isTransitioning) {
+            this.transitionQueue = index;
+            return;
+        }
+        
         const targetAngle = -index * this.anglePerCard;
-        this.smoothTransition(targetAngle);
-        this.setActiveIndex(index);
+        this.isTransitioning = true;
+        this.smoothTransition(targetAngle, () => {
+            this.setActiveIndex(index);
+            this.isTransitioning = false;
+            
+            // Process queued transition if any
+            if (this.transitionQueue !== null) {
+                const queuedIndex = this.transitionQueue;
+                this.transitionQueue = null;
+                setTimeout(() => this.rotateTo(queuedIndex), 50);
+            }
+        });
     }
 
     rotatePrev() {
@@ -407,10 +425,15 @@ class Carousel3D {
         return closestIndex;
     }
 
-    smoothTransition(targetAngle) {
+    smoothTransition(targetAngle, onComplete) {
         this.isPaused = true;
         const startRotation = this.currentRotation;
-        const diff = targetAngle - startRotation;
+        
+        // Find shortest rotation direction
+        let diff = targetAngle - startRotation;
+        while (diff > 180) diff -= 360;
+        while (diff < -180) diff += 360;
+        
         const duration = CONFIG.animation.carouselTransitionDuration;
         const startTime = performance.now();
 
@@ -422,12 +445,14 @@ class Carousel3D {
             this.currentRotation = startRotation + diff * easeProgress;
             this.track.style.transform = `rotateY(${this.currentRotation}deg)`;
             this.applyCurvature();
+            this.updateActiveProject();
 
             if (progress < 1) {
                 requestAnimationFrame(transition);
             } else {
                 this.isPaused = false;
                 this.lastTime = 0;
+                if (onComplete) onComplete();
             }
         };
 
