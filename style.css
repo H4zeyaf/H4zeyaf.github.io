@@ -457,12 +457,35 @@ body::before {
     margin-top: 10rem;
 }
 
+.hero-content {
+    mix-blend-mode: difference;
+    z-index: 10;
+}
+
 .hero-content h1 {
     font-family: var(--font-mono);
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: var(--space-xl);
+    color: #fff;
+}
+
+.discover-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: var(--space-md) 0;
+    border-left: 1px solid rgba(255,255,255,0.3);
+    padding-left: var(--space-md);
+    transition: all var(--transition-slow);
+    position: relative;
+    overflow: hidden;
+    mix-blend-mode: difference;
 }
 
 .typewriter {
@@ -677,10 +700,22 @@ body::before {
     position: absolute;
     left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scaleY(0);
     width: 3px;
     height: 60%;
     background: var(--color-accent-orange);
+    animation: projectIndicatorSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes projectIndicatorSlide {
+    from {
+        transform: translateY(-50%) scaleY(0);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-50%) scaleY(1);
+        opacity: 1;
+    }
 }
 
 /* 3D Cylinder Carousel */
@@ -1006,6 +1041,14 @@ body::before {
     height: 100%;
     max-width: 50px;
     max-height: 50px;
+}
+
+.skill-icon img {
+    width: 100%;
+    height: 100%;
+    max-width: 40px;
+    max-height: 40px;
+    object-fit: contain;
 }
 
 .js-icon,
