@@ -453,13 +453,13 @@ body::before {
     align-items: flex-start;
     padding: var(--space-2xl) var(--space-2xl) 0;
     position: relative;
-    z-index: 5;
+    z-index: 10;
     margin-top: 10rem;
 }
 
 .hero-content {
     position: relative;
-    z-index: 15;
+    z-index: 20;
 }
 
 .hero-content h1 {
@@ -469,11 +469,12 @@ body::before {
     line-height: 1.2;
     margin-bottom: var(--space-xl);
     color: #fff;
-    mix-blend-mode: difference;
+    mix-blend-mode: exclusion;
+    isolation: isolate;
 }
 
 .typewriter {
-    mix-blend-mode: difference;
+    mix-blend-mode: exclusion;
 }
 
 .discover-link {
@@ -490,7 +491,7 @@ body::before {
     transition: all var(--transition-slow);
     position: relative;
     overflow: hidden;
-    mix-blend-mode: difference;
+    mix-blend-mode: exclusion;
 }
 
 .typewriter {
@@ -568,25 +569,23 @@ body::before {
     right: 3%;
     max-width: 900px;
     padding: var(--space-2xl);
-    z-index: 10;
-    mix-blend-mode: difference;
-    pointer-events: none;
+    z-index: 20;
+    mix-blend-mode: exclusion;
+    isolation: isolate;
 }
 
 .hero-description p {
     color: #fff;
     font-size: 1.5rem;
     line-height: 1.7;
-    mix-blend-mode: difference;
 }
 
 .hero-description .highlight {
     color: #fff;
     font-weight: 500;
-    mix-blend-mode: difference;
 }
 
-/* Ensure mega text is below description for blend to work */
+/* Ensure mega text is below content for blend to work */
 .hero-marquee {
     position: absolute;
     top: 52%;
@@ -594,7 +593,7 @@ body::before {
     width: 100%;
     transform: translateY(-50%);
     pointer-events: none;
-    z-index: 3;
+    z-index: 5;
 }
 
 .mega-text {
