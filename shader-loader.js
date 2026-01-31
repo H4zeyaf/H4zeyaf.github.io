@@ -1,6 +1,7 @@
 /**
  * GLSL Shader Loading Screen - Exact User Shader Implementation
  * Multi-pass: Common -> Buffer A -> Buffer B -> Image
+ * Deployment trigger: 2026-01-31
  */
 
 class ShaderLoader {
