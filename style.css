@@ -70,20 +70,29 @@
     height: 100%;
 }
 
-/* Hide main content initially during shader loading */
+/* Hide all content initially during shader loading */
 body.shader-loading {
     overflow: hidden;
 }
 
-body.shader-loading main {
+body.shader-loading main,
+body.shader-loading .navbar,
+body.shader-loading .skip-link,
+body.shader-loading .mobile-menu {
     opacity: 0;
     visibility: hidden;
+}
+
+main,
+.navbar,
+.skip-link,
+.mobile-menu {
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 main {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 /* ==========================================================================
