@@ -1450,6 +1450,11 @@ body::before {
         font-size: 14px;
     }
     
+    html, body {
+        overflow-x: hidden;
+        touch-action: pan-y;
+    }
+    
     .navbar {
         padding: var(--space-md) var(--space-lg);
     }
