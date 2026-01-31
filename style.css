@@ -912,7 +912,7 @@ body::before {
 /* Carousel Indicators */
 .carousel-indicators {
     position: absolute;
-    bottom: -20px;
+    bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -1560,6 +1560,14 @@ body::before {
         margin-left: -110px;
         margin-top: -75px;
         transform: rotateY(var(--rotation)) translateZ(200px);
+    }
+    
+    .carousel-controls {
+        bottom: -40px;
+    }
+    
+    .carousel-indicators {
+        bottom: 5px;
     }
     
     .mega-text {
