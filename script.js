@@ -864,6 +864,9 @@ class ParallaxEffect {
         this.heroDescription = Utils.$('.hero-description');
         
         if (Utils.prefersReducedMotion()) return;
+        
+        // Disable on mobile
+        if (window.innerWidth <= 768) return;
 
         this.init();
     }
