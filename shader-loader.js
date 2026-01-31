@@ -17,45 +17,45 @@ class ShaderLoader {
         this.transitionDuration = 1500; // 1.5s fade
         this.onComplete = null;
         this.hasError = false;
-        
+
         console.log('[ShaderLoader] Initializing...');
     }
 
     async init() {
         try {
             this.createCanvas();
-            
+
             if (!this.setupWebGL()) {
                 console.warn('[ShaderLoader] WebGL2 not available, using fallback');
                 this.fallbackToCSS();
                 return;
             }
-            
+
             console.log('[ShaderLoader] WebGL2 context created');
-            
+
             this.createFramebuffers();
-            
+
             if (!this.compileShaders()) {
                 console.error('[ShaderLoader] Shader compilation failed');
                 this.fallbackToCSS();
                 return;
             }
-            
+
             console.log('[ShaderLoader] Shaders compiled successfully');
-            
+
             this.createGeometry();
-            
+
             // Show the canvas
             this.canvas.style.opacity = '1';
-            
+
             // Start render loop
             this.startRenderLoop();
-            
+
             // Start transition timer
             setTimeout(() => {
                 this.startTransition();
             }, this.transitionStart);
-            
+
         } catch (e) {
             console.error('[ShaderLoader] Initialization error:', e);
             this.fallbackToCSS();
@@ -64,43 +64,44 @@ class ShaderLoader {
 
     createCanvas() {
         console.log('[ShaderLoader] Creating canvas...');
-        
+
         // Add loading class to body to hide main content
         document.body.classList.add('shader-loading');
-        
+
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'shader-loader';
-        
+
         // Set canvas size to match window size (CSS handles display scaling)
         // Using 1:1 pixel ratio for all devices to avoid rendering issues
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        
+        // Round to integers to prevent fractional pixel issues on mobile
+        this.canvas.width = Math.floor(window.innerWidth);
+        this.canvas.height = Math.floor(window.innerHeight);
+
         this.canvas.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 99999;
             background: #000;
             opacity: 0;
             transition: opacity 0.3s ease;
         `;
         document.body.appendChild(this.canvas);
-        
+
         // Handle resize and orientation change
         this.handleResize = this.handleResize.bind(this);
         window.addEventListener('resize', this.handleResize, { passive: true });
         window.addEventListener('orientationchange', this.handleResize, { passive: true });
-        
+
         // Use visualViewport API for better mobile handling
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', this.handleResize, { passive: true });
         }
-        
+
         console.log('[ShaderLoader] Canvas created:', this.canvas.width, 'x', this.canvas.height);
-        
+
         // Create logo overlay
         this.logoOverlay = document.createElement('div');
         this.logoOverlay.id = 'shader-logo';
@@ -115,7 +116,7 @@ class ShaderLoader {
         const isMobileLogo = window.innerWidth <= 768;
         const logoWidth = isMobileLogo ? 140 : 200;
         const logoHeight = isMobileLogo ? 45 : 60;
-        
+
         this.logoOverlay.style.cssText = `
             position: fixed;
             top: 50%;
@@ -129,12 +130,12 @@ class ShaderLoader {
             pointer-events: none;
         `;
         document.body.appendChild(this.logoOverlay);
-        
+
         // Show logo after brief delay
         setTimeout(() => {
             this.logoOverlay.style.opacity = '1';
         }, 500);
-        
+
         // Add skip button for debugging
         this.skipButton = document.createElement('button');
         this.skipButton.textContent = 'Skip';
@@ -160,34 +161,38 @@ class ShaderLoader {
         `;
         this.skipButton.onclick = () => this.complete();
         document.body.appendChild(this.skipButton);
-        
+
         setTimeout(() => {
             this.skipButton.style.opacity = '1';
         }, 1000);
     }
-    
+
     handleResize() {
         if (!this.canvas || this.isTransitioning) return;
-        
-        // Debounce resize
-        clearTimeout(this.resizeTimeout);
-        this.resizeTimeout = setTimeout(() => {
-            // Set canvas size to match window size
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            
-            // Recreate framebuffers with new size
-            if (this.gl) {
-                this.createFramebuffers();
-            }
-            
-            console.log('[ShaderLoader] Resized to:', this.canvas.width, 'x', this.canvas.height);
-        }, 100);
+
+        const newWidth = Math.floor(window.innerWidth);
+        const newHeight = Math.floor(window.innerHeight);
+
+        // Only update if size actually changed
+        if (this.canvas.width === newWidth && this.canvas.height === newHeight) {
+            return;
+        }
+
+        // Set canvas size to match window size immediately (no debounce)
+        this.canvas.width = newWidth;
+        this.canvas.height = newHeight;
+
+        // Recreate framebuffers with new size
+        if (this.gl) {
+            this.createFramebuffers();
+        }
+
+        console.log('[ShaderLoader] Resized to:', this.canvas.width, 'x', this.canvas.height);
     }
 
     setupWebGL() {
         console.log('[ShaderLoader] Setting up WebGL2...');
-        
+
         // MUST use WebGL 2 for this shader (needs uint, bitwise ops, texelFetch)
         this.gl = this.canvas.getContext('webgl2', {
             alpha: false,
@@ -195,22 +200,22 @@ class ShaderLoader {
             preserveDrawingBuffer: false,
             powerPreference: 'high-performance'
         });
-        
+
         if (!this.gl) {
             console.error('[ShaderLoader] WebGL2 not supported');
             return false;
         }
-        
+
         const gl = this.gl;
         console.log('[ShaderLoader] WebGL2 version:', gl.getParameter(gl.VERSION));
         console.log('[ShaderLoader] Renderer:', gl.getParameter(gl.RENDERER));
-        
+
         // Check for required extensions
         const ext = gl.getExtension('EXT_color_buffer_float');
         if (!ext) {
             console.warn('[ShaderLoader] EXT_color_buffer_float not supported');
         }
-        
+
         return true;
     }
 
@@ -631,7 +636,8 @@ vec3 SeparableBlurUp(ivec2 xyFrag, ivec2 res, sampler2D tex)
     {        
         vec2 uv = (vec2(xyFrag + ivec2(0, k * kBloomDownsample)) - 0.5) / vec2(res);
 
-        vec3 texel = texture(tex, uv / float(kBloomDownsample), 0.0).xyz;
+        // Sample from bloom texture - no division needed since texture fills full 0-1 space
+        vec3 texel = texture(tex, uv, 0.0).xyz;
         
         BlurKernel(k, radius, texel, kBloomKernelShape, sigmaL, sigmaWeights);
     }
@@ -695,7 +701,9 @@ vec3 Render(vec2 uvScreen, int idx, int maxSamples, bool isDisplaced, float jpeg
     #define kExponent mix(0.05, 0.55, morph)
     
     float expMorph = pow(morph, 0.3);
-    #define kZoom 0.35
+    // Responsive zoom: on narrow/mobile screens (aspect < 1), zoom out more
+    float aspectRatio = iResolution.x / iResolution.y;
+    float kZoom = aspectRatio < 1.0 ? 0.25 : 0.35;
     #define kScale mix(2.6, 1.1, expMorph)
 
     mat3 M = WorldToViewMatrix(blend * kTwoPi, vec2(0.0), kZoom);
@@ -944,12 +952,24 @@ void mainImage( out vec4 rgba, in vec2 xy )
         const gl = this.gl;
         const w = this.canvas.width;
         const h = this.canvas.height;
-        
+
+        // Clean up existing textures and framebuffers before creating new ones
+        // This prevents stale texture data from causing visual artifacts during resize
+        if (this.textures.bufferA) {
+            gl.deleteTexture(this.textures.bufferA);
+            gl.deleteTexture(this.textures.bufferB);
+            gl.deleteTexture(this.textures.bufferAPrev);
+            gl.deleteFramebuffer(this.framebuffers.bufferA);
+            gl.deleteFramebuffer(this.framebuffers.bufferB);
+            gl.deleteFramebuffer(this.framebuffers.bufferAPrev);
+        }
+
         // Create textures - use RGBA8 for compatibility
+        // Use Math.floor for bufferB to ensure integer dimensions
         this.createTexture('bufferA', w, h);
-        this.createTexture('bufferB', Math.max(1, w / 3), Math.max(1, h / 3));
+        this.createTexture('bufferB', Math.max(1, Math.floor(w / 3)), Math.max(1, Math.floor(h / 3)));
         this.createTexture('bufferAPrev', w, h);
-        
+
         // Create framebuffers
         this.framebuffers.bufferA = this.createFramebuffer(this.textures.bufferA);
         this.framebuffers.bufferB = this.createFramebuffer(this.textures.bufferB);
@@ -958,9 +978,15 @@ void mainImage( out vec4 rgba, in vec2 xy )
 
     createTexture(name, w, h) {
         const gl = this.gl;
+
+        // Create texture with explicit black data to prevent stale GPU memory artifacts
         const tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, tex);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+        // Initialize with black pixels to clear any stale GPU memory
+        const blackData = new Uint8Array(w * h * 4);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, blackData);
+
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -974,12 +1000,12 @@ void mainImage( out vec4 rgba, in vec2 xy )
         const fb = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-        
+
         const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
         if (status !== gl.FRAMEBUFFER_COMPLETE) {
             console.error('Framebuffer incomplete:', status);
         }
-        
+
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         return fb;
     }
@@ -995,21 +1021,21 @@ void mainImage( out vec4 rgba, in vec2 xy )
         const bufferAProg = this.compileProgram(vsSource, this.getCommonShader(), this.getBufferAShader(), ['iChannel0']);
         const bufferBProg = this.compileProgram(vsSource, this.getCommonShader(), this.getBufferBShader(), ['iChannel0']);
         const imageProg = this.compileProgram(vsSource, this.getCommonShader(), this.getImageShader(), ['iChannel0', 'iChannel1']);
-        
+
         if (!bufferAProg || !bufferBProg || !imageProg) {
             return false;
         }
-        
+
         this.programs.bufferA = bufferAProg;
         this.programs.bufferB = bufferBProg;
         this.programs.image = imageProg;
-        
+
         return true;
     }
 
     compileProgram(vsSource, commonSource, fsSource, channelNames) {
         const gl = this.gl;
-        
+
         const fullFS = `#version 300 es
             precision highp float;
             precision highp int;
@@ -1033,12 +1059,12 @@ void mainImage( out vec4 rgba, in vec2 xy )
         const vs = gl.createShader(gl.VERTEX_SHADER);
         gl.shaderSource(vs, vsSource);
         gl.compileShader(vs);
-        
+
         if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
             console.error('VS error:', gl.getShaderInfoLog(vs));
             return null;
         }
-        
+
         const fs = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fs, fullFS);
         gl.compileShader(fs);
@@ -1073,10 +1099,10 @@ void mainImage( out vec4 rgba, in vec2 xy )
     createGeometry() {
         const gl = this.gl;
         const positions = new Float32Array([
-            -1, -1,  1, -1,  -1,  1,
-            -1,  1,  1, -1,   1,  1
+            -1, -1, 1, -1, -1, 1,
+            -1, 1, 1, -1, 1, 1
         ]);
-        
+
         this.buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
         gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
@@ -1084,14 +1110,14 @@ void mainImage( out vec4 rgba, in vec2 xy )
 
     renderPass(programInfo, inputTextures, outputFB) {
         const gl = this.gl;
-        
+
         if (!programInfo) return;
-        
+
         gl.useProgram(programInfo.program);
-        
+
         // Bind output and set viewport
         gl.bindFramebuffer(gl.FRAMEBUFFER, outputFB);
-        
+
         // Set viewport based on output target
         if (outputFB === null) {
             // Rendering to canvas - use canvas dimensions
@@ -1105,13 +1131,13 @@ void mainImage( out vec4 rgba, in vec2 xy )
             // bufferA and bufferAPrev are full resolution
             gl.viewport(0, 0, this.canvas.width, this.canvas.height);
         }
-        
+
         // Set uniforms
         const time = (performance.now() - this.startTime) / 1000;
         gl.uniform1f(programInfo.uniforms.iTime, time);
         gl.uniform2f(programInfo.uniforms.iResolution, this.canvas.width, this.canvas.height);
         gl.uniform1i(programInfo.uniforms.iFrame, this.frameCount);
-        
+
         // Bind input textures
         inputTextures.forEach((tex, i) => {
             gl.activeTexture(gl.TEXTURE0 + i);
@@ -1119,7 +1145,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             const loc = i === 0 ? programInfo.uniforms.iChannel0 : programInfo.uniforms.iChannel1;
             if (loc) gl.uniform1i(loc, i);
         });
-        
+
         // Draw
         const posLoc = gl.getAttribLocation(programInfo.program, 'a_position');
         gl.enableVertexAttribArray(posLoc);
@@ -1131,28 +1157,28 @@ void mainImage( out vec4 rgba, in vec2 xy )
 
     startRenderLoop() {
         const gl = this.gl;
-        
+
         const loop = () => {
             if (!this.isRunning) return;
-            
+
             // Render passes
             this.renderPass(this.programs.bufferA, [this.textures.bufferAPrev], this.framebuffers.bufferA);
             this.renderPass(this.programs.bufferB, [this.textures.bufferA], this.framebuffers.bufferB);
-            
+
             gl.bindFramebuffer(gl.FRAMEBUFFER, null);
             this.renderPass(this.programs.image, [this.textures.bufferB, this.textures.bufferA], null);
-            
+
             // Copy bufferA to bufferAPrev
             gl.bindFramebuffer(gl.READ_FRAMEBUFFER, this.framebuffers.bufferA);
             gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, this.framebuffers.bufferAPrev);
-            gl.blitFramebuffer(0, 0, this.canvas.width, this.canvas.height, 
-                               0, 0, this.canvas.width, this.canvas.height, 
-                               gl.COLOR_BUFFER_BIT, gl.LINEAR);
-            
+            gl.blitFramebuffer(0, 0, this.canvas.width, this.canvas.height,
+                0, 0, this.canvas.width, this.canvas.height,
+                gl.COLOR_BUFFER_BIT, gl.LINEAR);
+
             this.frameCount++;
             requestAnimationFrame(loop);
         };
-        
+
         requestAnimationFrame(loop);
     }
 
@@ -1161,11 +1187,11 @@ void mainImage( out vec4 rgba, in vec2 xy )
         const interval = setInterval(() => {
             const elapsed = performance.now() - this.startTime;
             const progress = Math.min((elapsed - this.transitionStart) / this.transitionDuration, 1);
-            
+
             if (progress >= 0) {
                 this.handleTransition(progress);
             }
-            
+
             if (progress >= 1) {
                 clearInterval(interval);
                 this.complete();
@@ -1177,7 +1203,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
         // Background fades first (0-60%)
         const bgFade = Math.min(progress / 0.6, 1);
         this.canvas.style.opacity = 1 - bgFade;
-        
+
         // Logo fades after (40-100%)
         if (progress > 0.4) {
             const logoFade = (progress - 0.4) / 0.6;
@@ -1192,11 +1218,11 @@ void mainImage( out vec4 rgba, in vec2 xy )
     fallbackToCSS() {
         console.log('[ShaderLoader] Using CSS fallback');
         this.hasError = true;
-        
+
         // Animated gradient fallback
         this.canvas.style.background = '#000';
         this.canvas.style.opacity = '1';
-        
+
         const pattern = document.createElement('div');
         pattern.style.cssText = `
             position: absolute;
@@ -1210,7 +1236,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             animation: shaderPulse 4s ease-in-out infinite;
         `;
         this.canvas.appendChild(pattern);
-        
+
         const style = document.createElement('style');
         style.textContent = `
             @keyframes shaderPulse {
@@ -1219,7 +1245,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             }
         `;
         document.head.appendChild(style);
-        
+
         setTimeout(() => this.startTransition(), this.transitionStart);
     }
 
@@ -1227,7 +1253,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
         console.log('[ShaderLoader] Complete');
         this.isRunning = false;
         document.body.classList.remove('shader-loading');
-        
+
         // Cleanup event listeners
         window.removeEventListener('resize', this.handleResize);
         window.removeEventListener('orientationchange', this.handleResize);
@@ -1235,7 +1261,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             window.visualViewport.removeEventListener('resize', this.handleResize);
         }
         clearTimeout(this.resizeTimeout);
-        
+
         if (this.canvas && this.canvas.parentNode) {
             this.canvas.parentNode.removeChild(this.canvas);
         }
@@ -1245,7 +1271,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
         if (this.skipButton && this.skipButton.parentNode) {
             this.skipButton.parentNode.removeChild(this.skipButton);
         }
-        
+
         if (this.onComplete) this.onComplete();
         window.dispatchEvent(new CustomEvent('shaderLoaderComplete'));
     }
@@ -1253,7 +1279,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
     destroy() {
         this.isRunning = false;
         const gl = this.gl;
-        
+
         if (gl) {
             Object.values(this.programs).forEach(p => {
                 if (p && p.program) gl.deleteProgram(p.program);
@@ -1262,7 +1288,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             Object.values(this.textures).forEach(t => gl.deleteTexture(t));
             if (this.buffer) gl.deleteBuffer(this.buffer);
         }
-        
+
         if (this.canvas && this.canvas.parentNode) {
             this.canvas.parentNode.removeChild(this.canvas);
         }
