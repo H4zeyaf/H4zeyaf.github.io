@@ -1457,6 +1457,14 @@ body::before {
         display: flex;
     }
     
+    .hero {
+        padding-top: 60px;
+    }
+    
+    .hero-grid {
+        height: calc(100vh - 120px);
+    }
+    
     .hero-content h1 {
         font-size: 2rem;
     }
@@ -1492,15 +1500,15 @@ body::before {
     }
     
     .carousel-card {
-        width: 220px;
-        height: 150px;
-        margin-left: -110px;
-        margin-top: -75px;
-        transform: rotateY(var(--rotation)) translateZ(280px);
+        width: 180px;
+        height: 120px;
+        margin-left: -90px;
+        margin-top: -60px;
+        transform: rotateY(var(--rotation)) translateZ(200px);
     }
     
     .mega-text {
-        font-size: 25vw;
+        font-size: 20vw;
     }
     
     .marquee-text {
@@ -1526,11 +1534,11 @@ body::before {
     }
     
     .carousel-card {
-        width: 180px;
-        height: 120px;
-        margin-left: -90px;
-        margin-top: -60px;
-        transform: rotateY(var(--rotation)) translateZ(200px);
+        width: 140px;
+        height: 100px;
+        margin-left: -70px;
+        margin-top: -50px;
+        transform: rotateY(var(--rotation)) translateZ(150px);
     }
 }
 
