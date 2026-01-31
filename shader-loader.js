@@ -66,8 +66,12 @@ class ShaderLoader {
     createCanvas() {
         console.log('[ShaderLoader] Creating canvas...');
 
-        // Add loading class to body to hide main content
+        // Add loading class to body to hide main content and prevent scrolling
         document.body.classList.add('shader-loading');
+        // Prevent any scrolling on mobile during loading
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+        document.documentElement.style.overflow = 'hidden';
 
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'shader-loader';
@@ -1228,6 +1232,10 @@ void mainImage( out vec4 rgba, in vec2 xy )
         console.log('[ShaderLoader] Complete');
         this.isRunning = false;
         document.body.classList.remove('shader-loading');
+        // Restore scrolling
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        document.documentElement.style.overflow = '';
 
         // Cleanup event listeners
         window.removeEventListener('resize', this.handleResize);
