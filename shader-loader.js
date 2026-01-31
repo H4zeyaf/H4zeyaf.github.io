@@ -70,8 +70,13 @@ class ShaderLoader {
         
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'shader-loader';
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        
+        // Handle high DPI displays and mobile
+        const isMobile = window.innerWidth <= 768;
+        this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
+        this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
+        
         this.canvas.style.cssText = `
             position: fixed;
             top: 0;
@@ -84,6 +89,38 @@ class ShaderLoader {
             transition: opacity 0.3s ease;
         `;
         document.body.appendChild(this.canvas);
+        
+        // Handle resize and orientation change
+        this.handleResize = this.handleResize.bind(this);
+        window.addEventListener('resize', this.handleResize, { passive: true });
+        window.addEventListener('orientationchange', this.handleResize, { passive: true });
+        
+        // Use visualViewport API for better mobile handling
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', this.handleResize, { passive: true });
+        }
+    }
+    
+    handleResize() {
+        if (!this.canvas || this.isTransitioning) return;
+        
+        // Debounce resize
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            const isMobile = window.innerWidth <= 768;
+            this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+            
+            this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
+            this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
+            
+            // Recreate framebuffers with new size
+            if (this.gl) {
+                this.createFramebuffers();
+            }
+            
+            console.log('[ShaderLoader] Resized to:', this.canvas.width, 'x', this.canvas.height);
+        }, 100);
+    }
         
         console.log('[ShaderLoader] Canvas created:', this.canvas.width, 'x', this.canvas.height);
         
@@ -98,13 +135,17 @@ class ShaderLoader {
                 <text x="45" y="38" fill="white" font-family="Inter, sans-serif" font-size="28" font-weight="800">HZ</text>
             </svg>
         `;
+        const isMobile = window.innerWidth <= 768;
+        const logoWidth = isMobile ? 140 : 200;
+        const logoHeight = isMobile ? 45 : 60;
+        
         this.logoOverlay.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 60px;
+            width: ${logoWidth}px;
+            height: ${logoHeight}px;
             z-index: 100000;
             opacity: 0;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -120,21 +161,25 @@ class ShaderLoader {
         // Add skip button for debugging
         this.skipButton = document.createElement('button');
         this.skipButton.textContent = 'Skip';
+        const isMobileSkip = window.innerWidth <= 768;
         this.skipButton.style.cssText = `
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: ${isMobileSkip ? '40px' : '20px'};
+            right: ${isMobileSkip ? 'auto' : '20px'};
+            left: ${isMobileSkip ? '50%' : 'auto'};
+            transform: ${isMobileSkip ? 'translateX(-50%)' : 'none'};
             z-index: 100001;
-            padding: 10px 20px;
+            padding: ${isMobileSkip ? '12px 24px' : '10px 20px'};
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
             cursor: pointer;
             font-family: Inter, sans-serif;
-            font-size: 14px;
+            font-size: ${isMobileSkip ? '16px' : '14px'};
             border-radius: 4px;
             opacity: 0;
             transition: opacity 0.3s;
+            -webkit-tap-highlight-color: transparent;
         `;
         this.skipButton.onclick = () => this.complete();
         document.body.appendChild(this.skipButton);
@@ -1172,6 +1217,14 @@ void mainImage( out vec4 rgba, in vec2 xy )
         console.log('[ShaderLoader] Complete');
         this.isRunning = false;
         document.body.classList.remove('shader-loading');
+        
+        // Cleanup event listeners
+        window.removeEventListener('resize', this.handleResize);
+        window.removeEventListener('orientationchange', this.handleResize);
+        if (window.visualViewport) {
+            window.visualViewport.removeEventListener('resize', this.handleResize);
+        }
+        clearTimeout(this.resizeTimeout);
         
         if (this.canvas && this.canvas.parentNode) {
             this.canvas.parentNode.removeChild(this.canvas);
