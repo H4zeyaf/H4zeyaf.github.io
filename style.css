@@ -1554,7 +1554,7 @@ body::before {
         height: 150px;
         margin-left: -110px;
         margin-top: -75px;
-        transform: rotateY(var(--rotation)) translateZ(280px);
+        transform: rotateY(var(--rotation)) translateZ(200px);
     }
     
     .mega-text {
@@ -1588,7 +1588,7 @@ body::before {
         height: 120px;
         margin-left: -90px;
         margin-top: -60px;
-        transform: rotateY(var(--rotation)) translateZ(200px);
+        transform: rotateY(var(--rotation)) translateZ(160px);
     }
 }
 
