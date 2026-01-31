@@ -137,35 +137,9 @@ class ShaderLoader {
             this.logoOverlay.style.opacity = '1';
         }, 500);
 
-        // Add skip button for debugging
-        this.skipButton = document.createElement('button');
-        this.skipButton.textContent = 'Skip';
-        const isMobileSkip = window.innerWidth <= 768;
-        this.skipButton.style.cssText = `
-            position: fixed;
-            bottom: ${isMobileSkip ? '40px' : '20px'};
-            right: ${isMobileSkip ? 'auto' : '20px'};
-            left: ${isMobileSkip ? '50%' : 'auto'};
-            transform: ${isMobileSkip ? 'translateX(-50%)' : 'none'};
-            z-index: 100001;
-            padding: ${isMobileSkip ? '12px 24px' : '10px 20px'};
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            cursor: pointer;
-            font-family: Inter, sans-serif;
-            font-size: ${isMobileSkip ? '16px' : '14px'};
-            border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        `;
-        this.skipButton.onclick = () => this.complete();
-        document.body.appendChild(this.skipButton);
 
-        setTimeout(() => {
-            this.skipButton.style.opacity = '1';
-        }, 1000);
+
+
     }
 
     handleResize() {
