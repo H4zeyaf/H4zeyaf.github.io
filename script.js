@@ -582,6 +582,100 @@ class SkillCards {
 }
 
 // ============================================================================
+// Component: Skills Category Mobile
+// Mobile-only category filter for skills
+// ============================================================================
+class SkillsCategoryMobile {
+    constructor() {
+        this.categoryButtons = Utils.$$('.skill-category-btn');
+        this.skillCards = Utils.$$('.skill-card');
+        
+        if (this.categoryButtons.length === 0 || this.skillCards.length === 0) return;
+        
+        // Only initialize on mobile (check if category buttons are visible)
+        this.isMobile = window.innerWidth <= 768;
+        
+        this.init();
+        
+        // Handle resize to switch between mobile/desktop modes
+        window.addEventListener('resize', Utils.throttle(() => {
+            const nowMobile = window.innerWidth <= 768;
+            if (nowMobile !== this.isMobile) {
+                this.isMobile = nowMobile;
+                if (this.isMobile) {
+                    this.filterSkills('frontend');
+                } else {
+                    this.showAllSkills();
+                }
+            }
+        }, 200));
+    }
+    
+    init() {
+        if (this.isMobile) {
+            // Show only frontend skills by default on mobile
+            this.filterSkills('frontend');
+        }
+        
+        this.categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => this.onCategoryClick(btn));
+        });
+    }
+    
+    onCategoryClick(button) {
+        const category = button.dataset.category;
+        
+        // Update active button
+        this.categoryButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        });
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+        
+        // Filter skills with animation
+        this.filterSkills(category);
+    }
+    
+    filterSkills(category) {
+        this.skillCards.forEach(card => {
+            const cardCategory = card.dataset.category;
+            
+            if (cardCategory === category) {
+                card.classList.add('active');
+                // Animate in
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px) scale(0.9)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0) scale(1)';
+                }, 50);
+            } else {
+                card.classList.remove('active');
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px) scale(0.9)';
+            }
+        });
+    }
+    
+    showAllSkills() {
+        this.skillCards.forEach((card, index) => {
+            card.classList.remove('active');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(40px) rotateX(20deg)';
+            
+            setTimeout(() => {
+                card.style.transition = `all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0) rotateX(0)';
+            }, index * 80);
+        });
+    }
+}
+
+// ============================================================================
 // Component: Mobile Menu
 // ============================================================================
 class MobileMenu {
@@ -899,6 +993,7 @@ function initApp() {
     new Carousel3D();
     new Tabs();
     new SkillCards();
+    new SkillsCategoryMobile();
     new MobileMenu();
     new SmoothScroll();
     new NavbarScroll();

@@ -1094,6 +1094,11 @@ body::before {
     object-fit: contain;
 }
 
+/* Mobile Skills Categories - Hidden on desktop */
+.skills-categories-mobile {
+    display: none;
+}
+
 .js-icon,
 .ts-icon {
     background: #000;
@@ -1491,8 +1496,47 @@ body::before {
         font-size: 2rem;
     }
     
+    .skills-categories-mobile {
+        display: flex;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-lg);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: var(--space-sm);
+    }
+    
+    .skill-category-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--color-text-secondary);
+        padding: var(--space-sm) var(--space-md);
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        white-space: nowrap;
+        font-family: var(--font-primary);
+    }
+    
+    .skill-category-btn.active,
+    .skill-category-btn:hover {
+        background: var(--color-accent-orange);
+        border-color: var(--color-accent-orange);
+        color: #000;
+    }
+    
     .skills-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* On mobile, hide all skill cards by default, show only active category */
+    .skill-card {
+        display: none !important;
+    }
+    
+    .skill-card.active {
+        display: flex !important;
     }
     
     .about-heading {
