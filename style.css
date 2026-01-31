@@ -481,27 +481,22 @@ body::before {
     color: #fff;
 }
 
-/* Typewriter inside marquee - uses backdrop-filter for negative effect */
-/* Positioned at top right on desktop, overlaps on mobile */
-.marquee-typewriter {
-    position: absolute;
-    top: 20%;
-    right: 3%;
+/* Hero typewriter - original position in hero content area */
+.hero-typewriter-wrapper {
     font-family: var(--font-mono);
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
-    color: #fff;
-    pointer-events: none;
-    backdrop-filter: invert(1);
-    -webkit-backdrop-filter: invert(1);
-}
-
-.marquee-typewriter .typewriter {
+    margin-bottom: var(--space-xl);
     color: #fff;
 }
 
-.marquee-typewriter .cursor {
+.hero-typewriter-wrapper .typewriter {
+    color: #fff;
+    mix-blend-mode: difference;
+}
+
+.hero-typewriter-wrapper .cursor {
     display: inline-block;
     animation: blink 1s step-end infinite;
     color: var(--color-text-primary);
@@ -582,14 +577,12 @@ body::before {
 
 .hero-marquee {
     position: absolute;
-    top: 0;
+    top: 52%;
     left: 0;
     width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transform: translateY(-50%);
     pointer-events: none;
+    z-index: 3;
 }
 
 .mega-text {
@@ -628,8 +621,18 @@ body::before {
 }
 
 /* Mega text as backdrop for blend mode */
+.hero-marquee {
+    position: absolute;
+    top: 52%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 .hero-marquee .mega-text {
     position: relative;
+    z-index: 1;
 }
 
 .mega-text {
@@ -1502,19 +1505,6 @@ body::before {
     
     .marquee-text {
         font-size: 1.5rem;
-    }
-    
-    .marquee-typewriter {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        right: auto;
-        font-size: 2rem;
-        margin-top: -1rem;
-        backdrop-filter: invert(1);
-        -webkit-backdrop-filter: invert(1);
     }
 }
 
