@@ -71,11 +71,10 @@ class ShaderLoader {
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'shader-loader';
         
-        // Handle high DPI displays and mobile
-        const isMobile = window.innerWidth <= 768;
-        this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-        this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
-        this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
+        // Set canvas size to match window size (CSS handles display scaling)
+        // Using 1:1 pixel ratio for all devices to avoid rendering issues
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         
         this.canvas.style.cssText = `
             position: fixed;
@@ -173,11 +172,9 @@ class ShaderLoader {
         // Debounce resize
         clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(() => {
-            const isMobile = window.innerWidth <= 768;
-            this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-            
-            this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
-            this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
+            // Set canvas size to match window size
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
             
             // Recreate framebuffers with new size
             if (this.gl) {
@@ -1092,6 +1089,23 @@ void mainImage( out vec4 rgba, in vec2 xy )
         
         gl.useProgram(programInfo.program);
         
+        // Bind output and set viewport
+        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFB);
+        
+        // Set viewport based on output target
+        if (outputFB === null) {
+            // Rendering to canvas - use canvas dimensions
+            gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+        } else if (outputFB === this.framebuffers.bufferB) {
+            // BufferB is at 1/3 resolution
+            const w = Math.max(1, Math.floor(this.canvas.width / 3));
+            const h = Math.max(1, Math.floor(this.canvas.height / 3));
+            gl.viewport(0, 0, w, h);
+        } else {
+            // bufferA and bufferAPrev are full resolution
+            gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+        }
+        
         // Set uniforms
         const time = (performance.now() - this.startTime) / 1000;
         gl.uniform1f(programInfo.uniforms.iTime, time);
@@ -1105,9 +1119,6 @@ void mainImage( out vec4 rgba, in vec2 xy )
             const loc = i === 0 ? programInfo.uniforms.iChannel0 : programInfo.uniforms.iChannel1;
             if (loc) gl.uniform1i(loc, i);
         });
-        
-        // Bind output
-        gl.bindFramebuffer(gl.FRAMEBUFFER, outputFB);
         
         // Draw
         const posLoc = gl.getAttribLocation(programInfo.program, 'a_position');
