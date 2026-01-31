@@ -99,28 +99,6 @@ class ShaderLoader {
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', this.handleResize, { passive: true });
         }
-    }
-    
-    handleResize() {
-        if (!this.canvas || this.isTransitioning) return;
-        
-        // Debounce resize
-        clearTimeout(this.resizeTimeout);
-        this.resizeTimeout = setTimeout(() => {
-            const isMobile = window.innerWidth <= 768;
-            this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-            
-            this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
-            this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
-            
-            // Recreate framebuffers with new size
-            if (this.gl) {
-                this.createFramebuffers();
-            }
-            
-            console.log('[ShaderLoader] Resized to:', this.canvas.width, 'x', this.canvas.height);
-        }, 100);
-    }
         
         console.log('[ShaderLoader] Canvas created:', this.canvas.width, 'x', this.canvas.height);
         
@@ -135,9 +113,9 @@ class ShaderLoader {
                 <text x="45" y="38" fill="white" font-family="Inter, sans-serif" font-size="28" font-weight="800">HZ</text>
             </svg>
         `;
-        const isMobile = window.innerWidth <= 768;
-        const logoWidth = isMobile ? 140 : 200;
-        const logoHeight = isMobile ? 45 : 60;
+        const isMobileLogo = window.innerWidth <= 768;
+        const logoWidth = isMobileLogo ? 140 : 200;
+        const logoHeight = isMobileLogo ? 45 : 60;
         
         this.logoOverlay.style.cssText = `
             position: fixed;
@@ -187,6 +165,27 @@ class ShaderLoader {
         setTimeout(() => {
             this.skipButton.style.opacity = '1';
         }, 1000);
+    }
+    
+    handleResize() {
+        if (!this.canvas || this.isTransitioning) return;
+        
+        // Debounce resize
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            const isMobile = window.innerWidth <= 768;
+            this.pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+            
+            this.canvas.width = Math.floor(window.innerWidth * this.pixelRatio);
+            this.canvas.height = Math.floor(window.innerHeight * this.pixelRatio);
+            
+            // Recreate framebuffers with new size
+            if (this.gl) {
+                this.createFramebuffers();
+            }
+            
+            console.log('[ShaderLoader] Resized to:', this.canvas.width, 'x', this.canvas.height);
+        }, 100);
     }
 
     setupWebGL() {
