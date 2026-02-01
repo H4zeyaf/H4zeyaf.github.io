@@ -111,11 +111,13 @@ class ShaderLoader {
         this.logoOverlay = document.createElement('div');
         this.logoOverlay.id = 'shader-logo';
         this.logoOverlay.innerHTML = `
-            <svg viewBox="0 0 140 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- H shape with Z inside -->
-                <path d="M8 8V52M8 30H32M32 8V52" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <path d="M12 14L28 30L12 46" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="45" y="38" fill="white" font-family="Inter, sans-serif" font-size="28" font-weight="800">HZ</text>
+            <svg viewBox="0 0 180 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- Centered H shape with Z inside -->
+                <g transform="translate(20, 0)">
+                    <path d="M8 8V52M8 30H32M32 8V52" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M12 14L28 30L12 46" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="95" y="38" fill="white" font-family="Inter, sans-serif" font-size="28" font-weight="800" text-anchor="middle">HZ</text>
+                </g>
             </svg>
         `;
         const isMobileLogo = window.innerWidth <= 768;

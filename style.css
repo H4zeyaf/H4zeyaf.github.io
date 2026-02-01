@@ -1577,18 +1577,18 @@ body::before {
     }
 
     .skills-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-sm);
     }
 
     .skill-card {
-        padding: var(--space-md);
+        padding: var(--space-sm);
         border-radius: 5px;
     }
 
     .skill-icon img {
-        max-width: 32px;
-        max-height: 32px;
+        max-width: 28px;
+        max-height: 28px;
     }
 
     /* On mobile, hide all skill cards by default, show only active category */
@@ -1645,17 +1645,17 @@ body::before {
     }
 
     .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-sm);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-xs);
     }
 
     .skill-card {
-        padding: var(--space-sm);
+        padding: var(--space-xs);
     }
 
     .skill-icon img {
-        max-width: 28px;
-        max-height: 28px;
+        max-width: 24px;
+        max-height: 24px;
     }
 
     .skills-title {
