@@ -18,6 +18,8 @@ class ShaderLoader {
         this.transitionDuration = 1500; // 1.5s fade
         this.onComplete = null;
         this.hasError = false;
+        this.scrollY = 0;
+        this.boundPreventScroll = this.preventScroll.bind(this);
 
         console.log('[ShaderLoader] Initializing...');
     }
@@ -68,10 +70,8 @@ class ShaderLoader {
 
         // Add loading class to body to hide main content and prevent scrolling
         document.body.classList.add('shader-loading');
-        // Prevent any scrolling on mobile during loading
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none';
-        document.documentElement.style.overflow = 'hidden';
+        // Prevent any scrolling on mobile during loading (Safari/iOS fix)
+        this.lockScroll();
 
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'shader-loader';
@@ -144,6 +144,45 @@ class ShaderLoader {
 
 
 
+    }
+
+    preventScroll(event) {
+        if (!this.isRunning) return;
+        event.preventDefault();
+    }
+
+    lockScroll() {
+        this.scrollY = window.scrollY || window.pageYOffset || 0;
+
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+        document.documentElement.style.overflow = 'hidden';
+
+        // iOS/Safari needs fixed positioning to truly lock scroll
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this.scrollY}px`;
+        document.body.style.width = '100%';
+
+        // Block touch/scroll events
+        document.addEventListener('touchmove', this.boundPreventScroll, { passive: false });
+        document.addEventListener('wheel', this.boundPreventScroll, { passive: false });
+    }
+
+    unlockScroll() {
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        document.documentElement.style.overflow = '';
+
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+
+        document.removeEventListener('touchmove', this.boundPreventScroll);
+        document.removeEventListener('wheel', this.boundPreventScroll);
+
+        if (this.scrollY) {
+            window.scrollTo(0, this.scrollY);
+        }
     }
 
     handleResize() {
@@ -1233,9 +1272,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
         this.isRunning = false;
         document.body.classList.remove('shader-loading');
         // Restore scrolling
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        document.documentElement.style.overflow = '';
+        this.unlockScroll();
 
         // Cleanup event listeners
         window.removeEventListener('resize', this.handleResize);
