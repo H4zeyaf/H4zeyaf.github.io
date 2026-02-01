@@ -1576,6 +1576,17 @@ body::before {
 
     .skills-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .skill-card {
+        padding: var(--space-md);
+        border-radius: 5px;
+    }
+
+    .skill-icon img {
+        max-width: 32px;
+        max-height: 32px;
     }
 
     /* On mobile, hide all skill cards by default, show only active category */
@@ -1633,6 +1644,16 @@ body::before {
 
     .skills-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .skill-card {
+        padding: var(--space-sm);
+    }
+
+    .skill-icon img {
+        max-width: 28px;
+        max-height: 28px;
     }
 
     .skills-title {
