@@ -136,6 +136,9 @@ class ShaderLoader {
         `;
         document.body.appendChild(this.logoOverlay);
 
+        // Center logo reliably on mobile (iOS/Safari safe-area/viewport)
+        this.updateLogoPosition();
+
         // Show logo after brief delay
         setTimeout(() => {
             this.logoOverlay.style.opacity = '1';
@@ -144,6 +147,17 @@ class ShaderLoader {
 
 
 
+    }
+
+    updateLogoPosition() {
+        if (!this.logoOverlay) return;
+        const vv = window.visualViewport;
+        const height = vv ? vv.height : window.innerHeight;
+        const width = vv ? vv.width : window.innerWidth;
+        const offsetTop = vv ? vv.offsetTop : 0;
+        const offsetLeft = vv ? vv.offsetLeft : 0;
+        this.logoOverlay.style.top = `${offsetTop + height / 2}px`;
+        this.logoOverlay.style.left = `${offsetLeft + width / 2}px`;
     }
 
     preventScroll(event) {
@@ -199,6 +213,8 @@ class ShaderLoader {
         // Set canvas size to match window size immediately (no debounce)
         this.canvas.width = newWidth;
         this.canvas.height = newHeight;
+
+        this.updateLogoPosition();
 
         // Recreate framebuffers with new size
         if (this.gl) {
