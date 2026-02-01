@@ -20,6 +20,7 @@ class ShaderLoader {
         this.hasError = false;
         this.scrollY = 0;
         this.boundPreventScroll = this.preventScroll.bind(this);
+        this.logoOffsetY = 0;
 
         console.log('[ShaderLoader] Initializing...');
     }
@@ -159,9 +160,10 @@ class ShaderLoader {
         const offsetTop = vv ? vv.offsetTop : 0;
         const offsetLeft = vv ? vv.offsetLeft : 0;
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        const yOffset = isMobile ? Math.round(height * 0) : 0;
-        this.logoOverlay.style.top = `${offsetTop + height / 2 + yOffset}px`;
+        this.logoOffsetY = isMobile ? Math.round(height * 0.04) : 0;
+        this.logoOverlay.style.top = `${offsetTop + height / 2}px`;
         this.logoOverlay.style.left = `${offsetLeft + width / 2}px`;
+        this.logoOverlay.style.transform = `translate(-50%, calc(-50% + ${this.logoOffsetY}px))`;
     }
 
     preventScroll(event) {
@@ -1248,7 +1250,7 @@ void mainImage( out vec4 rgba, in vec2 xy )
             const logoOpacity = 1 - logoFade;
             const glitchOffset = Math.sin(logoFade * Math.PI * 4) * logoFade * 10;
             this.logoOverlay.style.opacity = logoOpacity;
-            this.logoOverlay.style.transform = `translate(calc(-50% + ${glitchOffset}px), -50%) scale(${1 + logoFade * 0.2})`;
+            this.logoOverlay.style.transform = `translate(calc(-50% + ${glitchOffset}px), calc(-50% + ${this.logoOffsetY}px)) scale(${1 + logoFade * 0.2})`;
             this.logoOverlay.style.filter = `blur(${logoFade * 5}px)`;
         }
     }
