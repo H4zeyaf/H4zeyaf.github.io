@@ -158,7 +158,8 @@ class ShaderLoader {
         const width = vv ? vv.width : window.innerWidth;
         const offsetTop = vv ? vv.offsetTop : 0;
         const offsetLeft = vv ? vv.offsetLeft : 0;
-        const yOffset = width <= 768 ? Math.round(height * 0.06) : 0;
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const yOffset = isMobile ? Math.round(height * 0.08) : 0;
         this.logoOverlay.style.top = `${offsetTop + height / 2 + yOffset}px`;
         this.logoOverlay.style.left = `${offsetLeft + width / 2}px`;
     }
